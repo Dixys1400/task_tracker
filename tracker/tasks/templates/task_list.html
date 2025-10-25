@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="table-responsive">
+  <table class="table table-hover table-bordered shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Статус</th>
+        <th>Создано</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ task.title }}</td>
+          <td>{{ task.description|truncatechars:50 }}</td>
+          <td>
+            {% if task.status == "done" %}
+              <span class="badge bg-success">Выполнено</span>
+            {% elif task.status == "in_progress" %}
+              <span class="badge bg-warning text-dark">В процессе</span>
+            {% else %}
+              <span class="badge bg-secondary">В планах</span>
+            {% endif %}
+          </td>
+          <td>{{ task.created_at|date:"d M Y H:i" }}</td>
+          <td>
+            <a href="{% url 'task_detail' task.pk %}" class="btn btn-sm btn-info">Детали</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6" class="text-center text-muted">Нет задач</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <div class="card-header text-center bg-info text-red">
+    Progress
+  </div>
+  <div class="card-body">
+    <p class="mb-2">
+      Percent Done: <span id="percent" class="fw-bold">0%</span>
+    </p>
+    <div class="progress">
+      <div id="progress-bar"
+           class="progress-bar bg-success"
+           role="progressbar"
+           style="width: 0%;"
+           aria-valuenow="0">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-4 shadow-sm">
+  <div class="card-header text-center bg-warning text-red">
+    Мотивация
+  </div>
+  <div class="card-body text-center">
+    <p id="motivation-text" class="fw-bold text-dark">Загрузка мотивации...</p>
+  </div>
+</div>
+
+
+<script>
+    async function loadProgress(){
+    try {
+        const response = await fetch('/api/tasks/percent_progress/');
+        const data = await response.json();
+        const percent = data.percent_progress || 0;
+        document.getElementById('percent').innerText = percent + '%';
+
+        const bar = document.getElementById('progress-bar');
+        bar.style.width = percent + '%';
+        bar.setAttribute('aria-valuenow', percent);
+        bar.innerText = percent + '%';
+    } catch (error) {
+        console.error("Error fetching progress:", error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadProgress();
+});
+
+
+
+  async function loadMotivation(){
+        try {
+            const response = await fetch('/api/tasks/motivation/');
+            const data = await response.json();
+            document.getElementById('motivation-text').innerText = data.motivation;
+        } catch (error) {
+            console.error("Error fetching motivation:", error);
+            document.getElementById('motivation-text').innerText = "Не удалось загрузить мотивацию";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadProgress();
+        loadMotivation();
+    });
+
+
+
+
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title">{{ task.title }}</h2>
+      <p class="card-text">{{ task.description }}</p>
+      <p><strong>Статус:</strong> <span id="task-status">
+        {% if task.status == "done" %}
+          <span class="badge bg-success">Выполнено</span>
+        {% elif task.status == "in_progress" %}
+          <span class="badge bg-warning text-dark">В процессе</span>
+        {% else %}
+          <span class="badge bg-secondary">В планах</span>
+        {% endif %}
+      </span></p>
+      <p><strong>Создано:</strong> {{ task.created_at }}</p>
+      <p><strong>Обновлено:</strong> {{ task.updated_at }}</p>
+
+      <a class="btn btn-warning" href="{% url 'task_edit' task.pk %}">Редактировать</a>
+      <form method="post" action="{% url 'task_delete' task.pk %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Точно удалить?')">Удалить</button>
+      </form>
+
+      {% if task.status != "done" %}
+        <button id="complete-btn"
+                class="btn btn-success"
+                data-task-id="{{ task.id }}">
+          Выполнить
+        </button>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('complete-btn');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            const taskID = this.getAttribute('data-task-id');
+
+            fetch(`/api/tasks/${taskID}/complete/`, {
+                method: "PATCH",  // Как у тебя в @action
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"  // Django CSRF токен
+                }
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('task-status').innerHTML =
+                    '<span class="badge bg-success">Выполнено</span>';
+
+                btn.remove();
+
+                alert("Задача выполнена!");
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                alert("Произошла ошибка при выполнении задачи");
+            });
+        });
+    }
+});
+</script>
+
+{% endblock %}
+

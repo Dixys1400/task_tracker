@@ -1,0 +1,98 @@
+/* Стили для task_form.html */
+.kaleido-form {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.kaleido-form input,
+.kaleido-form textarea,
+.kaleido-form select {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.kaleido-btn {
+    background: linear-gradient(135deg, #6366f1, #4338ca);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+/* Обводка для полей ввода */
+.kaleido-form input,
+.kaleido-form textarea,
+.kaleido-form select {
+    border: 2px solid rgba(99, 102, 241, 0.3) !important;  /* Фиолетовая обводка */
+    transition: all 0.3s ease !important;
+}
+
+.kaleido-form input:focus,
+.kaleido-form textarea:focus,
+.kaleido-form select:focus {
+    border-color: #6366f1 !important;  /* Ярче при фокусе */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+}
+
+
+
+
+/* Стили для выпадающего списка статусов */
+.kaleido-form select {
+    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    color: white !important;
+    padding: 0.75rem !important;
+    border-radius: 8px !important;
+    appearance: none !important; /* Убираем стандартную стрелку */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+}
+
+/* Стили для опций внутри селекта */
+.kaleido-form select option {
+    background: #1f2937 !important;
+    color: white !important;
+    padding: 10px !important;
+}
+
+/* При фокусе */
+.kaleido-form select:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    outline: none !important;
+}
+
+
+
+
+.kaleido-form input,
+.kaleido-form textarea,
+.kaleido-form select {
+    color: #ffffff !important;
+    background: rgba(0, 0, 0, 0.7) !important; /* Еще темнее фон */
+    border: 2px solid #6366f1 !important; /* Яркая обводка */
+    font-weight: 500 !important;
+}
+
+.kaleido-form input::placeholder,
+.kaleido-form textarea::placeholder {
+    color: #d1d5db !important;
+    font-weight: 400 !important;
+}

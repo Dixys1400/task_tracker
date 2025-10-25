@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="kaleido-form">
+    <h2>Создать задачу</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="kaleido-btn">Сохранить</button>
+    </form>
+</div>
+
+{% endblock %}
